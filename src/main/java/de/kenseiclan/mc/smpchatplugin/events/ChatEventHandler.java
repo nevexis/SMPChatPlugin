@@ -2,6 +2,7 @@ package de.kenseiclan.mc.smpchatplugin.events;
 
 import de.kenseiclan.mc.smpchatplugin.SMPChatPlugin;
 import de.kenseiclan.mc.smpchatplugin.config.ChatGroup;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
@@ -40,8 +41,12 @@ public class ChatEventHandler implements Listener {
                 .getUserManager()
                 .getUser(chatEvent.getPlayer().getUniqueId());
         assert user != null;
+        final Group group = plugin.getLuckPerms()
+                .getProvider()
+                .getGroupManager()
+                .getGroup(user.getPrimaryGroup());
 
-        final String message = getFormattedChatMessage(chatEvent.getPlayer(), chatEvent.getMessage(), user);
+        final String message = getFormattedChatMessage(chatEvent.getPlayer(), chatEvent.getMessage(), user, group);
 
         chatEvent.getPlayer()
                 .hasPermission("");
@@ -61,29 +66,36 @@ public class ChatEventHandler implements Listener {
                 .getUserManager()
                 .getUser(event.getPlayer().getUniqueId());
         assert user != null;
+        final Group group = plugin.getLuckPerms()
+                .getProvider()
+                .getGroupManager()
+                .getGroup(user.getPrimaryGroup());
 
         message = message.replace("/me ", "");
-        message = getFormattedChatMessage(event.getPlayer(), message, user);
+        message = getFormattedChatMessage(event.getPlayer(), message, user, group);
         message = String.format("%s %s", chatMessageSymbol, message);
 
         plugin.getServer()
                 .broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
-    private ChatGroup getPlayerChatGroup(final Player player, final User user) {
+    private ChatGroup getPlayerChatGroup(final Player player, final User user, final Group group) {
+
         return groupList.stream()
                 .filter(chatGroup -> {
                     final String permission = String.format("chatgroup.%s", chatGroup.name());
                     return user.getNodes()
+                            .contains(Node.builder(permission).build())
+                            || group.getNodes()
                             .contains(Node.builder(permission).build());
                 })
                 .findFirst()
                 .orElse(new ChatGroup("", ""));
     }
 
-    private String getFormattedChatMessage(final Player player, final String message, final User user) {
-        String groupPrefix = getPlayerChatGroup(player, user).prefix();
-        if(!groupPrefix.equals("")) groupPrefix = groupPrefix + " ";
+    private String getFormattedChatMessage(final Player player, final String message, final User user, final Group group) {
+        String groupPrefix = getPlayerChatGroup(player, user, group).prefix();
+        if (!groupPrefix.equals("")) groupPrefix = groupPrefix + " ";
         final String userPrefix = Optional.ofNullable(user.getCachedData().getMetaData().getPrefix()).orElse("&7");
         final String playerName = player.getName();
         return String.format("%s&r%s%s &8%s &r%s", groupPrefix, userPrefix, playerName, chatMessageSymbol, message);
