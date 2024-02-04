@@ -16,11 +16,11 @@ public class ConfigHelperImpl implements ConfigHelper {
     @Override
     public List<ChatGroup> loadGroups() {
         final List<ChatGroup> groups = new ArrayList<>();
-        ConfigurationSection groupSection = plugin.getConfig().getConfigurationSection("groups");
+        ConfigurationSection groupSection = plugin.getConfig().getConfigurationSection("chat.groups");
         if (groupSection != null) {
             for (String key : groupSection.getKeys(false)) {
                 String prefix = groupSection.getString(key + ".prefix");
-                groups.add(new ChatGroup(prefix));
+                groups.add(new ChatGroup(key, prefix));
             }
         }
         return groups;
