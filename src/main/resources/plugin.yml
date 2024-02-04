@@ -2,6 +2,8 @@ name: SMPChatPlugin
 version: '${version}'
 main: de.kenseiclan.mc.smpchatplugin.SMPChatPlugin
 api-version: '1.20'
+depend:
+  - LuckPerms
 permissions:
   chatgroup.*:
     description: defines the group
