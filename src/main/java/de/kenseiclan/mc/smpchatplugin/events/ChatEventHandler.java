@@ -34,7 +34,14 @@ public class ChatEventHandler implements Listener {
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent chatEvent) {
         chatEvent.setCancelled(true);
-        final String message = getFormattedChatMessage(chatEvent.getPlayer(), chatEvent.getMessage());
+
+        final User user = plugin.getLuckPerms()
+                .getProvider()
+                .getUserManager()
+                .getUser(chatEvent.getPlayer().getUniqueId());
+        assert user != null;
+
+        final String message = getFormattedChatMessage(chatEvent.getPlayer(), chatEvent.getMessage(), user);
 
         chatEvent.getPlayer()
                 .hasPermission("");
@@ -49,23 +56,24 @@ public class ChatEventHandler implements Listener {
         if (!message.toLowerCase().startsWith("/me ")) return;
         event.setCancelled(true);
 
+        final User user = plugin.getLuckPerms()
+                .getProvider()
+                .getUserManager()
+                .getUser(event.getPlayer().getUniqueId());
+        assert user != null;
+
         message = message.replace("/me ", "");
-        message = getFormattedChatMessage(event.getPlayer(), message);
+        message = getFormattedChatMessage(event.getPlayer(), message, user);
         message = String.format("%s %s", chatMessageSymbol, message);
 
         plugin.getServer()
                 .broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
 
-    private ChatGroup getPlayerChatGroup(final Player player) {
+    private ChatGroup getPlayerChatGroup(final Player player, final User user) {
         return groupList.stream()
                 .filter(chatGroup -> {
                     final String permission = String.format("chatgroup.%s", chatGroup.name());
-                    final User user = plugin.getLuckPerms()
-                            .getProvider()
-                            .getUserManager()
-                            .getUser(player.getUniqueId());
-                    assert user != null;
                     return user.getNodes()
                             .contains(Node.builder(permission).build());
                 })
@@ -73,10 +81,12 @@ public class ChatEventHandler implements Listener {
                 .orElse(new ChatGroup("", ""));
     }
 
-    private String getFormattedChatMessage(final Player player, final String message) {
-        final String groupPrefix = getPlayerChatGroup(player).prefix();
+    private String getFormattedChatMessage(final Player player, final String message, final User user) {
+        String groupPrefix = getPlayerChatGroup(player, user).prefix();
+        if(!groupPrefix.equals("")) groupPrefix = groupPrefix + " ";
+        final String userPrefix = Optional.ofNullable(user.getCachedData().getMetaData().getPrefix()).orElse("&7");
         final String playerName = player.getName();
-        return String.format("%s &r&7%s &8%s &r%s", groupPrefix, playerName, chatMessageSymbol, message);
+        return String.format("%s&r%s%s &8%s &r%s", groupPrefix, userPrefix, playerName, chatMessageSymbol, message);
     }
 
     public void reloadGroups() {
