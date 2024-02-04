@@ -1,0 +1,4 @@
+name: SMPChatPlugin
+version: '${version}'
+main: de.kenseiclan.mc.smpchatplugin.SMPChatPlugin
+api-version: '1.20'
