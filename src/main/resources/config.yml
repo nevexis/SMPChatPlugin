@@ -2,12 +2,12 @@ chat:
   chat-symbol: '»'
   groups:
     cherry:
-      prefix: '&l&dCHERRY &r&8|'
+      prefix: "&d&lCHERRY &r&8|"
     bamboo:
-      prefix: '&l&aBAMBOO &r&8|'
+      prefix: "&a&lBAMBOO &r&8|"
     flower:
-      prefix: '&l&eFLOWER &r&8|'
+      prefix: "&e&lFLOWER &r&8|"
     frost:
-      prefix: '&l&bFROST &r&8|'
+      prefix: "&b&lFROST &r&8|"
     jungle:
-      prefix: '&l&2JUNGLE &r&8|'
+      prefix: "&2&lJUNGLE &r&8|"
