@@ -30,9 +30,7 @@ public class ChatEventHandler implements Listener {
     @EventHandler
     public void onChat(final AsyncPlayerChatEvent chatEvent) {
         chatEvent.setCancelled(true);
-        final String groupPrefix = getPlayerChatGroup(chatEvent.getPlayer()).prefix();
-        final String playerName = chatEvent.getPlayer().getName();
-        final String message = String.format("%s &r&7%s &8%s &r%s", groupPrefix, playerName, chatMessageSymbol, chatEvent.getMessage());
+        final String message = getFormattedChatMessage(chatEvent.getPlayer(), chatEvent.getMessage());
 
         chatEvent.getPlayer()
                 .hasPermission("");
@@ -48,9 +46,8 @@ public class ChatEventHandler implements Listener {
         event.setCancelled(true);
 
         message = message.replace("/me ", "");
-        final String groupPrefix = getPlayerChatGroup(event.getPlayer()).prefix();
-        final String playerName = event.getPlayer().getName();
-        message = String.format("%s %s &r&7%s &8%s &r%s", chatMessageSymbol, groupPrefix, playerName, chatMessageSymbol, message);
+        message = getFormattedChatMessage(event.getPlayer(), message);
+        message = String.format("%s %s", chatMessageSymbol, message);
 
         plugin.getServer()
                 .broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
@@ -63,5 +60,11 @@ public class ChatEventHandler implements Listener {
                 )
                 .findFirst()
                 .orElse(new ChatGroup("", ""));
+    }
+
+    private String getFormattedChatMessage(final Player player, final String message) {
+        final String groupPrefix = getPlayerChatGroup(player).prefix();
+        final String playerName = player.getName();
+        return String.format("%s &r&7%s &8%s &r%s", groupPrefix, playerName, chatMessageSymbol, message);
     }
 }
