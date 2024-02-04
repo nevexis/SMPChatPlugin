@@ -2,6 +2,8 @@ package de.kenseiclan.mc.smpchatplugin.events;
 
 import de.kenseiclan.mc.smpchatplugin.SMPChatPlugin;
 import de.kenseiclan.mc.smpchatplugin.config.ChatGroup;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,13 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerCommandSendEvent;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Optional;
 
 public class ChatEventHandler implements Listener {
-    private final Plugin plugin;
+    private final SMPChatPlugin plugin;
     private final List<ChatGroup> groupList;
     private final String chatMessageSymbol;
 
@@ -55,9 +59,16 @@ public class ChatEventHandler implements Listener {
 
     private ChatGroup getPlayerChatGroup(final Player player) {
         return groupList.stream()
-                .filter(chatGroup ->
-                        player.hasPermission(String.format("chatgroup.%s", chatGroup.name()))
-                )
+                .filter(chatGroup -> {
+                    final String permission = String.format("chatgroup.%s", chatGroup.name());
+                    final User user = plugin.getLuckPerms()
+                            .getProvider()
+                            .getUserManager()
+                            .getUser(player.getUniqueId());
+                    assert user != null;
+                    return user.getNodes()
+                            .contains(Node.builder(permission).build());
+                })
                 .findFirst()
                 .orElse(new ChatGroup("", ""));
     }
