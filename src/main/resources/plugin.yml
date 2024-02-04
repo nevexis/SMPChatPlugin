@@ -5,6 +5,18 @@ api-version: '1.20'
 depend:
   - LuckPerms
 permissions:
+  smpchat.*:
+    description: all permissions to manage the groups
+    default: op
+    children:
+      reload:
+        description: Reloads the config file
+        default: op
   chatgroup.*:
     description: defines the group
     default: not op
+commands:
+  smpchat:
+    description: manage the plugin
+    usage: /smpchat help
+    permission: smpchat.use

@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class ChatEventHandler implements Listener {
     private final SMPChatPlugin plugin;
-    private final List<ChatGroup> groupList;
+    private List<ChatGroup> groupList;
     private final String chatMessageSymbol;
 
     public ChatEventHandler(final SMPChatPlugin plugin) {
@@ -77,5 +77,10 @@ public class ChatEventHandler implements Listener {
         final String groupPrefix = getPlayerChatGroup(player).prefix();
         final String playerName = player.getName();
         return String.format("%s &r&7%s &8%s &r%s", groupPrefix, playerName, chatMessageSymbol, message);
+    }
+
+    public void reloadGroups() {
+        groupList = plugin.getConfigHelper()
+                .loadGroups();
     }
 }
