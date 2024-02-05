@@ -1,9 +1,11 @@
 package de.kenseiclan.mc.smpchatplugin.commands;
 
-import de.kenseiclan.mc.smpchatplugin.SMPChatPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import de.kenseiclan.mc.smpchatplugin.SMPChatPlugin
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
+import org.bukkit.command.CommandSender
 
 class SMPChatCommand(private val plugin: SMPChatPlugin) : CommandExecutor {
 
@@ -18,17 +20,32 @@ class SMPChatCommand(private val plugin: SMPChatPlugin) : CommandExecutor {
     }
 
     private fun reloadCommand(sender: CommandSender) {
+        val audience = SMPChatPlugin.adventure.sender(sender)
         if (!sender.hasPermission("smpchat.reload")) {
-            sender.sendMessage("[SMPChat] No permissions!")
+            val parsed = SMPChatPlugin.miniMessage.deserialize(ChatStrings.NO_PERMISSION)
+            audience.sendMessage(parsed)
             return
         }
 
         plugin.reloadChatGroups()
-        sender.sendMessage("[SMPChat] Reload complete!")
+        val parsed = SMPChatPlugin.miniMessage.deserialize(
+            ChatStrings.CHAT_MESSAGE,
+            Placeholder.component("message", Component.text("Reload complete!"))
+        )
+        audience.sendMessage(parsed)
     }
 
     private fun helpCommand(sender: CommandSender) {
-        sender.sendMessage("---- SMPChat Help ----")
-        sender.sendMessage("- /smpchat reload")
+        val audience = SMPChatPlugin.adventure.sender(sender)
+        var parsed = SMPChatPlugin.miniMessage.deserialize(
+            ChatStrings.MENU_HEADER,
+            Placeholder.component("title", Component.text("HELP"))
+        )
+        audience.sendMessage(parsed)
+        parsed = SMPChatPlugin.miniMessage.deserialize(
+            ChatStrings.CHAT_MESSAGE,
+            Placeholder.component("message", Component.text("- /smpchat reload"))
+        )
+        audience.sendMessage(parsed)
     }
 }
