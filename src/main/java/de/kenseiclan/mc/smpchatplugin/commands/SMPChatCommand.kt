@@ -39,12 +39,17 @@ class SMPChatCommand(private val plugin: SMPChatPlugin) : CommandExecutor {
         val audience = SMPChatPlugin.adventure.sender(sender)
         var parsed = SMPChatPlugin.miniMessage.deserialize(
             ChatStrings.MENU_HEADER,
-            Placeholder.component("title", Component.text("HELP"))
+            Placeholder.component("title", Component.text("Help (Page 1/1)"))
         )
         audience.sendMessage(parsed)
         parsed = SMPChatPlugin.miniMessage.deserialize(
             ChatStrings.CHAT_MESSAGE,
-            Placeholder.component("message", Component.text("- /smpchat reload"))
+            Placeholder.component("message", Component.text("/smpchat reload - Reloads the configuration."))
+        )
+        audience.sendMessage(parsed)
+        parsed = SMPChatPlugin.miniMessage.deserialize(
+            ChatStrings.CHAT_MESSAGE,
+            Placeholder.component("message", Component.text("/smpchat help - Shows this message."))
         )
         audience.sendMessage(parsed)
     }
