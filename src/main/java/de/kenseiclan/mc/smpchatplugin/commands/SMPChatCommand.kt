@@ -1,6 +1,7 @@
 package de.kenseiclan.mc.smpchatplugin.commands;
 
 import de.kenseiclan.mc.smpchatplugin.SMPChatPlugin
+import de.kenseiclan.mc.smpchatplugin.config.ChatStrings
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.command.Command
@@ -52,5 +53,13 @@ class SMPChatCommand(private val plugin: SMPChatPlugin) : CommandExecutor {
             Placeholder.component("message", Component.text("/smpchat help - Shows this message."))
         )
         audience.sendMessage(parsed)
+//        parsed = SMPChatPlugin.miniMessage.deserialize(
+//            ChatStrings.CHAT_MESSAGE,
+//            Placeholder.component(
+//                "message",
+//                Component.text("/prefix <prefix> - Sets the player's prefix using <a:https://docs.advntr.dev/minimessage/format.html>Adventure</a>!")
+//            )
+//        )
+//        audience.sendMessage(parsed)
     }
 }

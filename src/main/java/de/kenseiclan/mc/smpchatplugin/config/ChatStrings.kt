@@ -1,4 +1,4 @@
-package de.kenseiclan.mc.smpchatplugin.commands
+package de.kenseiclan.mc.smpchatplugin.config
 
 class ChatStrings {
     companion object {
