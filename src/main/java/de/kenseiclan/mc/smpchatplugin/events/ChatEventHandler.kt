@@ -21,12 +21,11 @@ class ChatEventHandler(private val plugin: SMPChatPlugin) : Listener {
         requireNotNull(user)
         val group = plugin.luckPerms.provider.groupManager.getGroup(user.primaryGroup)
 
-        var message = getFormattedChatMessage(chatEvent.player, chatEvent.message, user, group)
+        val message = getFormattedChatMessage(chatEvent.player, chatEvent.message, user, group)
 
-        chatEvent.recipients.forEach { _ ->
-            val audience = SMPChatPlugin.adventure.players()
+        chatEvent.recipients.forEach { player ->
             val adventureFormattedMessage = SMPChatPlugin.miniMessage.deserialize(message)
-            audience.sendMessage(adventureFormattedMessage)
+            SMPChatPlugin.adventure.player(player).sendMessage(adventureFormattedMessage)
         }
     }
 
