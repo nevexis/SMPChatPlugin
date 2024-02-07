@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
 group = 'de.kensei-clan.mc'
@@ -25,6 +27,7 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 def targetJavaVersion = 17
@@ -49,5 +52,18 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+kotlin {
+    jvmToolchain(17)
+}
+
+shadowJar {
+    archiveBaseName.set('SMPChatPlugin')
+    archiveVersion.set(version)
+    archiveClassifier.set('')
+
+    manifest {
+        attributes 'Main-Class': group + '.smpchatplugin.SMPChatPlugin'
     }
 }
