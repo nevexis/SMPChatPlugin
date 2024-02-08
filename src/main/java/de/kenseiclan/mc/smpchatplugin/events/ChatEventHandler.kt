@@ -52,8 +52,9 @@ class ChatEventHandler(private val plugin: SMPChatPlugin) : Listener {
         var groupPrefix = plugin.chatGroupProvider.getPlayerChatGroup(user, group).prefix
         if (groupPrefix.isNotEmpty()) groupPrefix += " "
         val userPrefix = user.cachedData.metaData.prefix ?: "<gray>"
+        val userSuffix = user.cachedData.metaData.suffix ?: "<gray>"
         val playerName = player.name
 
-        return "$groupPrefix$userPrefix$playerName<reset> <dark_gray>$chatMessageSymbol</dark_gray> <gray>$message"
+        return "$groupPrefix$userPrefix$playerName<reset> <dark_gray>$chatMessageSymbol</dark_gray> $userSuffix$message"
     }
 }
