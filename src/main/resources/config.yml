@@ -2,12 +2,32 @@ chat:
   chat-symbol: '»'
   groups:
     cherry:
-      prefix: "&d&lCHERRY &r&8|"
+      prefix: "<dark_purple><bold>CHERRY</bold></dark_purple> <dark_gray>|</dark_gray>"
     bamboo:
-      prefix: "&a&lBAMBOO &r&8|"
+      prefix: "<green><bold>BAMBOO</bold></green> <dark_gray>|</dark_gray>"
     flower:
-      prefix: "&e&lFLOWER &r&8|"
+      prefix: "<yellow><bold>FLOWER</bold></yellow> <dark_gray>|</dark_gray>"
     frost:
-      prefix: "&b&lFROST &r&8|"
+      prefix: "<aqua><bold>FROST</bold></aqua> <dark_gray>|</dark_gray>"
     jungle:
-      prefix: "&2&lJUNGLE &r&8|"
+      prefix: "<dark_green><bold>JUNGLE</bold></dark_green> <dark_gray>|</dark_gray>"
+    ttt:
+      prefix: "<dark_red><bold>TTT</bold></dark_red> <dark_gray>|</dark_gray>"
+    hase:
+      prefix: "<bold>HASE</bold> <dark_gray>|</dark_gray>"
+    dragon:
+      prefix: "<dark_purple><bold>DRAGON</bold></dark_purple> <dark_gray>|</dark_gray>"
+    chef:
+      prefix: "<yellow><bold>CHEF</bold></yellow> <dark_gray>|</dark_gray>"
+    transformer:
+      prefix: "<gold><bold>TRANSFORMER</bold></gold> <dark_gray>|</dark_gray>"
+    stats:
+      prefix: "<dark_aqua><bold>7STATS</bold></dark_aqua> <dark_gray>|</dark_gray>"
+    admin:
+      prefix: "<red><bold>ADMIN</bold></red> <dark_gray>|</dark_gray>"
+    mod:
+      prefix: "<#273869><bold>MOD</bold></#273869> <dark_gray>|</dark_gray>"
+    kensei:
+      prefix: "<#d86ee4><bold>KENSEI</bold></#d86ee4> <dark_gray>|</dark_gray>"
+    vip:
+      prefix: "<yellow><bold>VIP</bold></yellow> <dark_gray>|</dark_gray>"
